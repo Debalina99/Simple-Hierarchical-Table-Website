@@ -14,7 +14,7 @@ const Table = ({ data, setData }) => {
                 children: item.children
                   ? item.children.map(child => ({
                       ...child,
-                      value: ((child.value / total) * newValue).toFixed(2), // Proportionally updating children
+                      value: ((child.value / total) * newValue).toFixed(2), 
                     }))
                   : [],
               };
