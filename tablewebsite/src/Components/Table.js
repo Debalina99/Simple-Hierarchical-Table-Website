@@ -7,7 +7,17 @@ const Table = ({ data, setData }) => {
         const updateData = (items) => {
           return items.map(item => {
             if (item.id === id) {
-              return { ...item, value: newValue };
+              const total = item.children ? item.children.reduce((sum, child) => sum + child.value, 0) : 1;
+              return {
+                ...item,
+                value: newValue,
+                children: item.children
+                  ? item.children.map(child => ({
+                      ...child,
+                      value: ((child.value / total) * newValue).toFixed(2), // Proportionally updating children
+                    }))
+                  : [],
+              };
             }
             if (item.children) {
               return { ...item, children: updateData(item.children) };
@@ -15,10 +25,11 @@ const Table = ({ data, setData }) => {
             return item;
           });
         };
-        
+      
         const newData = updateData(data);
         setData(newData);
       };
+      
       const calculateGrandTotal = () => {
         return data.reduce((sum, row) => sum + row.value, 0);
       };
